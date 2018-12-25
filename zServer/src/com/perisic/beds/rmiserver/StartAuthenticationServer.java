@@ -18,7 +18,9 @@ public class StartAuthenticationServer {
 		try {
 			Authentication authentication = new AuthenticationImplementation();
 			Registry registry = LocateRegistry.createRegistry(1088);
+//			Registry signUp = LocateRegistry.createRegistry(1089);
 			registry.rebind("AuthService",authentication);
+//			registry.rebind("RegisterService",authentication);
 			
 //			Naming.rebind("//localhost/AuthService1128", authentication);
 			

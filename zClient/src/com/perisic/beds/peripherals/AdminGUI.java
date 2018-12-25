@@ -21,7 +21,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LoginGUI {
+public class AdminGUI {
 
 	private JFrame login;
 	private static JTextField username;
@@ -40,9 +40,9 @@ public class LoginGUI {
 				
 				
 				try {
-					LoginGUI window = new LoginGUI();
+					AdminGUI window = new AdminGUI();
 					window.login.setVisible(true);
-					
+				
 					}
 				 	catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +54,7 @@ public class LoginGUI {
 	/**
 	 * Create the application.
 	 */
-	public LoginGUI() {
+	public AdminGUI() {
 		try{
 			authentication = (Authentication)Naming.lookup("rmi://localhost:1088/AuthService");
 			
@@ -86,8 +86,7 @@ public class LoginGUI {
 	 */
 	private void initialize() {
 		login = new JFrame();
-		login.setBounds(100, 100, 400, 300);
-		login.setLocationRelativeTo(null);  
+		login.setBounds(100, 100, 550, 300);
 		login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		login.getContentPane().setLayout(null);
 		
@@ -107,11 +106,7 @@ public class LoginGUI {
 		username.setBounds(200, 70, 86, 20);
 		login.getContentPane().add(username);
 		username.setColumns(10);
-			
-		password = new JPasswordField();
-		password.setBounds(200, 120, 86, 20);
-		login.getContentPane().add(password);
-		
+	
 		
 		
 		JButton btnLogin = new JButton("Login");
@@ -129,18 +124,15 @@ public class LoginGUI {
 					//check user type
 					
 					if(user.equals("Student")) {
-						login.dispose();
 						StartGUI sg = new StartGUI();
 						sg.main(null);
 					}
 					if(user.equals("Teacher")) {
-						login.dispose();
-						AnswerGUI sg = new AnswerGUI();
+						StartGUI sg = new StartGUI();
 						sg.main(null);
 					}
 					if(user.equals("Admin")) {
-						login.dispose();
-						AdminGUI sg = new AdminGUI();
+						StartGUI sg = new StartGUI();
 						sg.main(null);
 					}
 				}
@@ -156,7 +148,6 @@ public class LoginGUI {
 		btnSignUp.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				login.dispose();
 				RegisterGUI window = new RegisterGUI();
 				window.main(null);
 

@@ -2,6 +2,7 @@ package com.perisic.beds.rmiserver;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -15,7 +16,11 @@ public class dbConnect {
 		return st;
 	}
 
-	
+  public static PreparedStatement getConn(String sql) throws SQLException{
+		
+	  PreparedStatement ps = getCon().prepareStatement(sql);
+		return ps;
+	}
 	// Return the connection object to connect to the database
 	private static Connection getCon() throws SQLException{
 				

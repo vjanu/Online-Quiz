@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface Authentication extends Remote{
-	public boolean authenticate(String userName, String password) throws RemoteException ;
-	public String getUser(String userName, String password ) throws RemoteException;
+	public boolean authenticate(String userName, char[] pw) throws RemoteException ;
+	public String getUser(String userName, char[] pw ) throws RemoteException;
+	public boolean registerUser(String userName, char[] password, String type ) throws RemoteException;
 }

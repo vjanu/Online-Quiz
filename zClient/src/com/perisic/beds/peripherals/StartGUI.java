@@ -47,13 +47,14 @@ public class StartGUI {
 	private void initialize() {
 		StartFrame = new JFrame();
 		StartFrame.setBounds(100, 100, 450, 300);
+		StartFrame.setLocationRelativeTo(null); 
 		StartFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		StartFrame.getContentPane().setLayout(null);
 		
 		JButton btnStart = new JButton("Start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		
+				StartFrame.dispose();
 				MenuGUI mg = new MenuGUI();
 				mg.main(null);
 				

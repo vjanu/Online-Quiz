@@ -2,6 +2,7 @@ package com.perisic.beds.rmiserver;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,11 +20,11 @@ public class AuthenticationImplementation extends UnicastRemoteObject implements
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public boolean authenticate(String userName, String password)
+	public boolean authenticate(String userName, char[] password)
 			throws RemoteException {
 
 		// SQL string to check whether the entered username and passwords match with the database
-		String query = "SELECT * FROM User WHERE username = '"+userName+"'  AND password = '"+password+"' ";
+		String query = "SELECT * FROM User WHERE username = '"+userName+"'  AND password = '"+String.valueOf(password)+"' ";
 		
 		try{
 			
@@ -64,11 +65,11 @@ public class AuthenticationImplementation extends UnicastRemoteObject implements
 	}
 	
 	
-	public String getUser(String userName, String password ) throws RemoteException{
+	public String getUser(String userName, char[] password ) throws RemoteException{
 		
 		// SQL string to check whether the entered username and passwords match with the database
-		String query = "SELECT * FROM User WHERE username = '"+userName+"'  AND password = '"+password+"' ";
-		
+		String query = "SELECT type FROM User WHERE username = '"+userName+"'  AND password = '"+String.valueOf(password)+"' ";
+		String un = "";
 		try{
 			
             
@@ -80,14 +81,14 @@ public class AuthenticationImplementation extends UnicastRemoteObject implements
 			
 			if(rs.last()){    // If the Username and Password matches
 				
-				String un = rs.getString(2);
+			    un = rs.getString("type");
 				return un;
 			}
 			
 			// If the Username or password does not match
 			else{
-				
-				return "asd";
+				  un ="No User";
+				return un;
 			}
             
         } catch(SQLException ex){
@@ -105,6 +106,34 @@ public class AuthenticationImplementation extends UnicastRemoteObject implements
             }
         }
 		
-		return "dsa";
+		return un;
 	}
+
+
+	@Override
+	public boolean registerUser(String userName, char[] password, String type) throws RemoteException {
+				String query = "INSERT INTO User(username, password, type) VALUES(?, ?, ?) ";
+				try{
+					PreparedStatement preparedStmt = dbConnect.getConn(query);
+					preparedStmt.setString(1, userName);
+					preparedStmt.setString(2, String.valueOf(password));
+					preparedStmt.setString(3, type);
+					preparedStmt.executeUpdate();
+					
+		        } catch(SQLException ex){
+		            ex.printStackTrace();
+		            
+		            
+		        }finally{
+		            try{
+		                dbConnect.getConnection().close();
+		                
+		            } catch (SQLException ex) {
+		                ex.printStackTrace();
+		                return false;
+		            }
+		        }
+				
+				return true;
+			}
 }

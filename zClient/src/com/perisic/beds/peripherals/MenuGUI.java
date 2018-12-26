@@ -48,7 +48,7 @@ public class MenuGUI {
 		btnScience.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				QnAgui qna = new QnAgui("Science");
+				QnAGUI qna = new QnAGUI("Science");
 				qna.frame.setVisible(true); 
 				
 			}
@@ -59,7 +59,7 @@ public class MenuGUI {
 		JButton btnSports = new JButton("Sports");
 		btnSports.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				QnAgui qna = new QnAgui("Sport");
+				QnAGUI qna = new QnAGUI("Sport");
 				qna.frame.setVisible(true); 
 				
 			}

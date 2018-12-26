@@ -6,15 +6,22 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 import com.perisic.beds.questionnaire.QuestionSet;
+import com.perisic.beds.rmiinterface.Authentication;
+import com.perisic.beds.rmiinterface.RemoteQuestions;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
-public class QnAgui {
+public class QnAGUI {
 
 	JFrame frame;
 	
@@ -22,7 +29,7 @@ public class QnAgui {
 	//private ButtonGroup bg2 = new ButtonGroup();
 
 	private JTextArea lblQuestion;
-	
+	RemoteQuestions myQuestions; 
 	private JLabel temp;
 	private JRadioButton rdbtnNewRadioButton_0;
 	private JRadioButton rdbtnNewRadioButton_1;
@@ -39,7 +46,7 @@ public class QnAgui {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					QnAgui window = new QnAgui(null); 
+					QnAGUI window = new QnAGUI(null); 
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,8 +57,14 @@ public class QnAgui {
 
 	
 	private String fieldname;
-	public QnAgui(String field) {
+	public QnAGUI(String field) {
+		try {
+			myQuestions =   (RemoteQuestions) Naming.lookup("rmi://localhost:1099/QuestionService1819");
 		
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		fieldname = field;
 		initialize();
 	}
@@ -81,7 +94,7 @@ public class QnAgui {
 		JButton btnNext = new JButton("Next");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				insertAnswers();
 				if (!temp.getText().isEmpty()) {	
 					
 					if( !fieldname.isEmpty()  )    
@@ -195,6 +208,7 @@ public class QnAgui {
 		rdbtnNewRadioButton_0.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				temp.setText(rdbtnNewRadioButton_0.getText());
+				rdbtnNewRadioButton_0.setActionCommand(rdbtnNewRadioButton_0.getText());
 			}
 		});
 		
@@ -205,6 +219,7 @@ public class QnAgui {
 		rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				temp.setText(rdbtnNewRadioButton_1.getText());
+				rdbtnNewRadioButton_1.setActionCommand(rdbtnNewRadioButton_1.getText());
 			}
 		});
 		
@@ -215,6 +230,7 @@ public class QnAgui {
 		rdbtnNewRadioButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				temp.setText(rdbtnNewRadioButton_2.getText());
+				rdbtnNewRadioButton_2.setActionCommand(rdbtnNewRadioButton_2.getText());
 			}
 		});
 		rdbtnNewRadioButton_2.setBounds(50, 259, 185, 23);
@@ -224,6 +240,7 @@ public class QnAgui {
 		rdbtnNewRadioButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				temp.setText(rdbtnNewRadioButton_3.getText());
+				rdbtnNewRadioButton_3.setActionCommand(rdbtnNewRadioButton_3.getText());
 			}
 		});
 		rdbtnNewRadioButton_3.setBounds(341, 262, 235, 23);
@@ -235,5 +252,23 @@ public class QnAgui {
 		bg.add(rdbtnNewRadioButton_3);
 		
 		
+	}
+       public boolean insertAnswers() {
+		
+		
+		String type = bg.getSelection().getActionCommand();
+		
+		boolean status = false;
+		try {
+			int id = (int)(Math.random() * 50 + 1);
+			status = myQuestions.insertAnswers(id, "xyz", lblQuestion.getText().split(".")[0], type);
+
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return status;
 	}
 }

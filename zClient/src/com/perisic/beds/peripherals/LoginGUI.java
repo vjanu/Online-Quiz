@@ -24,9 +24,16 @@ import java.awt.event.ActionEvent;
 public class LoginGUI {
 
 	private JFrame login;
-	private static JTextField username;
-	private static JPasswordField password;
-	
+	 public  JTextField username;
+	 public JPasswordField password;
+	private String user;
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
 	private Authentication authentication;
 	private Authentication registerNewUser;
 
@@ -99,6 +106,7 @@ public class LoginGUI {
 		lblUsername.setBounds(91, 70, 82, 14);
 		login.getContentPane().add(lblUsername);
 		
+		
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setBounds(91, 120, 82, 14);
 		login.getContentPane().add(lblPassword);
@@ -107,6 +115,7 @@ public class LoginGUI {
 		username.setBounds(200, 70, 86, 20);
 		login.getContentPane().add(username);
 		username.setColumns(10);
+		setUser(username.getText());
 			
 		password = new JPasswordField();
 		password.setBounds(200, 120, 86, 20);
@@ -124,13 +133,13 @@ public class LoginGUI {
 				String user = userType();
 				
 				if(status) {
-					String success = "Login successful";					
+					String success = "Login successfull";					
 					JOptionPane.showMessageDialog(null, success);
 					//check user type
 					
 					if(user.equals("Student")) {
 						login.dispose();
-						StartGUI sg = new StartGUI();
+						StartGUI sg = new StartGUI(username.getText());
 						sg.main(null);
 					}
 					if(user.equals("Teacher")) {
@@ -146,7 +155,7 @@ public class LoginGUI {
 				}
 			
 				else {
-					String unsuccess = "Login unsuccessful ";
+					String unsuccess = "Login unsuccessfull ";
 					JOptionPane.showMessageDialog(null, unsuccess);
 				}
 				

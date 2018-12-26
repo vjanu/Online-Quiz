@@ -109,7 +109,7 @@ public class AuthenticationImplementation extends UnicastRemoteObject implements
 		return un;
 	}
 
-
+     
 	@Override
 	public boolean registerUser(String userName, char[] password, String type) throws RemoteException {
 				String query = "INSERT INTO User(username, password, type) VALUES(?, ?, ?) ";

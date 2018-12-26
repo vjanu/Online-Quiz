@@ -19,6 +19,8 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
 public class RegisterGUI {
@@ -86,6 +88,11 @@ public class RegisterGUI {
 		lblTopic.setBounds(185, 10, 82, 14);
 		register.getContentPane().add(lblTopic);
 		
+		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setBounds(500, 8, 82, 14);
+		register.getContentPane().add(lblLogin);
+		
+		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setBounds(91, 70, 82, 14);
 		register.getContentPane().add(lblUsername);
@@ -152,6 +159,18 @@ public class RegisterGUI {
 	
 		btnSignUp.setBounds(215, 216, 89, 23);
 		register.getContentPane().add(btnSignUp);
+		
+		lblLogin.addMouseListener(new MouseAdapter()  
+		{  
+		    public void mouseClicked(MouseEvent e)  
+		    {  
+		    	register.dispose();
+		    	LoginGUI sg = new LoginGUI();
+				sg.main(null);
+
+		    }  
+		});
+		
 		
 	}
 	

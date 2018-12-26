@@ -35,4 +35,6 @@ public interface RemoteQuestions extends Remote {
 	 * @throws RemoteException
 	 */
 	public Vector<Question> getData() throws RemoteException; 
+	
+	public boolean insertAnswers(int id, String userName, String question, String answer) throws RemoteException;
 }

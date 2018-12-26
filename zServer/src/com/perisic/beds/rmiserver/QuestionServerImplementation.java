@@ -2,6 +2,8 @@ package com.perisic.beds.rmiserver;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import com.perisic.beds.rmiinterface.Question;
@@ -119,6 +121,35 @@ extends UnicastRemoteObject implements RemoteQuestions{
 	@Override
 	public Vector<Question> getData() { 
 		return myQuestions; 
+	}
+	
+	@Override
+	public boolean insertAnswers(int id, String userName, String question, String answer) throws RemoteException {
+		String query = "INSERT INTO Answers(id, username, question, answer) VALUES(?, ?, ?, ?) ";
+		try{
+			PreparedStatement preparedStmt = dbConnect.getConn(query);
+			preparedStmt.setInt(1, id);
+			preparedStmt.setString(2, userName);
+			preparedStmt.setString(3, question);
+			preparedStmt.setString(4, answer);
+		
+			preparedStmt.executeUpdate();
+			
+        } catch(SQLException ex){
+            ex.printStackTrace();
+            
+            
+        }finally{
+            try{
+                dbConnect.getConnection().close();
+                
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+		
+		return true;
 	}
 
 }

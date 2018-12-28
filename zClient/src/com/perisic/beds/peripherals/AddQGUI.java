@@ -183,6 +183,13 @@ public class AddQGUI {
 				boolean status = insertQnA();
 				
 				if(status) {
+					
+					question.setText("");
+					ans1.setText("");
+					ans2.setText("");
+					ans3.setText("");
+					ans4.setText("");
+					cans.setText("");
 					String success = "Question Added";					
 					JOptionPane.showMessageDialog(null, success);
 					

@@ -119,6 +119,7 @@ public class AdminGUI {
 		btnShowResult.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
+				admin.dispose();
 				AdminResultGUI window = new AdminResultGUI();
 				window.main(null);
 			}
@@ -127,6 +128,7 @@ public class AdminGUI {
 		btnAddQuestion.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
+				admin.dispose();
 				AddQGUI window = new AddQGUI();
 				window.main(null);
 
@@ -136,6 +138,7 @@ public class AdminGUI {
 		btnAddUser.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
+				admin.dispose();
 				RegisterGUI window = new RegisterGUI();
 				window.main(null);
 

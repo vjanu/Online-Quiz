@@ -159,7 +159,7 @@ public class AnswerGUI {
 		    public void mouseClicked(MouseEvent e)  
 		    {  
 		    	addQnA.dispose();
-		    	AdminGUI sg = new AdminGUI();
+		    	LoginGUI sg = new LoginGUI();
 				sg.main(null);
 
 		    }  

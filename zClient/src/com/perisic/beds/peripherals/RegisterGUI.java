@@ -142,6 +142,7 @@ public class RegisterGUI {
 					String success = "Registration successful";					
 					JOptionPane.showMessageDialog(null, success);
 					
+					register.dispose();
 					LoginGUI sg = new LoginGUI();
 					sg.main(null);
 					

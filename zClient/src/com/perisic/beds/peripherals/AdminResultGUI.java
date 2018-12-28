@@ -37,7 +37,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
-public class AnswerGUI {
+public class AdminResultGUI {
 
 	private JFrame addQnA;
 	JTable table ;
@@ -50,7 +50,7 @@ public class AnswerGUI {
 			public void run() {
 				
 				try {
-					AnswerGUI addQGUI = new AnswerGUI();
+					AdminResultGUI addQGUI = new AdminResultGUI();
 					addQGUI.addQnA.setVisible(true);
 					}
 				 	catch (Exception e) {
@@ -60,7 +60,7 @@ public class AnswerGUI {
 		});
 	}
 
-	public AnswerGUI() {
+	public AdminResultGUI() {
 		try{
 			results = (RemoteQuestions) Naming.lookup("rmi://localhost:1099/QuestionService1819");
 		

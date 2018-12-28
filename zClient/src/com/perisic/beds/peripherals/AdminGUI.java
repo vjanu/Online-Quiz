@@ -19,11 +19,13 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
 public class AdminGUI {
 
-	private JFrame login;
+	private JFrame admin;
 	private static JTextField username;
 	private static JPasswordField password;
 	
@@ -41,7 +43,7 @@ public class AdminGUI {
 				
 				try {
 					AdminGUI window = new AdminGUI();
-					window.login.setVisible(true);
+					window.admin.setVisible(true);
 				
 					}
 				 	catch (Exception e) {
@@ -85,67 +87,53 @@ public class AdminGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		login = new JFrame();
-		login.setBounds(100, 100, 550, 300);
-		login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		login.getContentPane().setLayout(null);
-		
-		JLabel lblTopic = new JLabel("Online Quiz");
-		lblTopic.setBounds(185, 10, 82, 14);
-		login.getContentPane().add(lblTopic);
-		
-		JLabel lblUsername = new JLabel("Username");
-		lblUsername.setBounds(91, 70, 82, 14);
-		login.getContentPane().add(lblUsername);
-		
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(91, 120, 82, 14);
-		login.getContentPane().add(lblPassword);
-		
-		username = new JTextField();
-		username.setBounds(200, 70, 86, 20);
-		login.getContentPane().add(username);
-		username.setColumns(10);
-	
+		admin = new JFrame();
+		admin.setBounds(100, 100, 400, 300);
+		admin.setLocationRelativeTo(null);  
+		admin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		admin.getContentPane().setLayout(null);
 		
 		
-		JButton btnLogin = new JButton("Login");
-		JButton btnSignUp = new JButton("SignUp");
-		btnLogin.addActionListener(new ActionListener() {
+		
+		JLabel lblBack = new JLabel("Go Back");
+		lblBack.setBounds(315, 8, 82, 14);
+		admin.getContentPane().add(lblBack);
+		
+		JButton btnAddQuestion = new JButton("Add Question");
+		JButton btnShowResult = new JButton("Show Result");
+		JButton btnAddUser = new JButton("Add User");
+		
+		lblBack.addMouseListener(new MouseAdapter()  
+		{  
+		    public void mouseClicked(MouseEvent e)  
+		    {  
+		    	admin.dispose();
+		    	LoginGUI sg = new LoginGUI();
+				sg.main(null);
+
+		    }  
+		});
+		
+		
+		
+		btnShowResult.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				
-				boolean status = authenticate();
-				String user = userType();
-				
-				if(status) {
-					String success = "Login successful";					
-					JOptionPane.showMessageDialog(null, success);
-					//check user type
-					
-					if(user.equals("Student")) {
-						StartGUI sg = new StartGUI();
-						sg.main(null);
-					}
-					if(user.equals("Teacher")) {
-						StartGUI sg = new StartGUI();
-						sg.main(null);
-					}
-					if(user.equals("Admin")) {
-						StartGUI sg = new StartGUI();
-						sg.main(null);
-					}
-				}
-			
-				else {
-					String unsuccess = "Login unsuccessful ";
-					JOptionPane.showMessageDialog(null, unsuccess);
-				}
-				
+				AdminResultGUI window = new AdminResultGUI();
+				window.main(null);
 			}
 		});
 		
-		btnSignUp.addActionListener(new ActionListener() {
+		btnAddQuestion.addActionListener(new ActionListener() {
+			@SuppressWarnings("static-access")
+			public void actionPerformed(ActionEvent arg0) {
+				AddQGUI window = new AddQGUI();
+				window.main(null);
+
+			}
+		});
+		
+		btnAddUser.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
 				RegisterGUI window = new RegisterGUI();
@@ -153,10 +141,13 @@ public class AdminGUI {
 
 			}
 		});
-		btnLogin.setBounds(105, 216, 89, 23);
-		btnSignUp.setBounds(215, 216, 89, 23);
-		login.getContentPane().add(btnLogin);
-		login.getContentPane().add(btnSignUp);
+		
+		btnAddQuestion.setBounds(130, 70, 120, 23);
+		btnShowResult.setBounds(130, 120, 120, 23);
+		btnAddUser.setBounds(130, 170, 120, 23);
+		admin.getContentPane().add(btnShowResult);
+		admin.getContentPane().add(btnAddQuestion);
+		admin.getContentPane().add(btnAddUser);
 	}
 	
 	public boolean authenticate() {

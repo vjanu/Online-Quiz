@@ -2,6 +2,7 @@ package com.perisic.beds.rmiinterface;
 
 import java.io.Serializable;
 import java.util.Hashtable;
+import java.util.List;
 /**
  * Question and how often the question was answered.
  * @author Marc Conrad
@@ -13,7 +14,7 @@ public class Question implements Serializable {
 	 * class must be available on both client and server. 
 	 */
 	private static final long serialVersionUID = -7273230871957691871L;
-	private String [] answers; 
+	private String[] answers; 
 	private String questionText; 
 	private Hashtable<String,Integer> frequencies = new Hashtable<String,Integer>(); 
 
@@ -41,7 +42,7 @@ public class Question implements Serializable {
 	 * @return all the possible answers from which to choose from. 
 	 */
 	
-	public String [] getAnswers() { 
+	public String[] getAnswers() { 
 		return answers; 
 	}
 

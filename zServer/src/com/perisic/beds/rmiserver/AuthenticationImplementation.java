@@ -136,4 +136,72 @@ public class AuthenticationImplementation extends UnicastRemoteObject implements
 				
 				return true;
 			}
+
+
+	@Override
+	public void insertUser(String userName) throws RemoteException {
+		String query = "UPDATE session SET username='"+userName+"' WHERE id = 1";
+		
+	
+		
+		try{
+			PreparedStatement preparedStmt = dbConnect.getConn(query);
+			preparedStmt.executeUpdate();
+			
+        } catch(SQLException ex){
+            ex.printStackTrace();
+            
+            
+        }finally{
+            try{
+                dbConnect.getConnection().close();
+                
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+             
+            }
+        }
+		
+	
+		
+	}
+	
+	@Override
+	public String loggedUser() throws RemoteException {
+				String query = "SELECT username FROM session where id=1";
+				String un="";
+				try{
+					
+		            
+		            ResultSet rs = dbConnect.getConnection().executeQuery(query);					
+					if(rs.last()){    						
+					    un = rs.getString("username");
+						return un;
+					}
+					
+					else{
+						  un ="No User";
+						return un;
+					}
+		            
+		        } catch(SQLException ex){
+		        	
+		            ex.printStackTrace();
+		            
+		            
+		        }finally{
+		        	
+		            try{
+		                dbConnect.getConnection().close();
+		                
+		            } catch (SQLException ex) {
+		                ex.printStackTrace();
+		            }
+		        }
+				
+				return un;
+		
+		
+		
+	}
 }

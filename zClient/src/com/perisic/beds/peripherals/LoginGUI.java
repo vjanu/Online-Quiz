@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
@@ -24,8 +26,9 @@ import java.awt.event.ActionEvent;
 public class LoginGUI {
 
 	private JFrame login;
-	 public  JTextField username;
+	 public  static JTextField username;
 	 public JPasswordField password;
+	 JLabel lblFakeUsername;
 	private String user;
 	public String getUser() {
 		return user;
@@ -115,22 +118,23 @@ public class LoginGUI {
 		username.setBounds(200, 70, 86, 20);
 		login.getContentPane().add(username);
 		username.setColumns(10);
-		setUser(username.getText());
-			
+		
+	    
+		
 		password = new JPasswordField();
 		password.setBounds(200, 120, 86, 20);
 		login.getContentPane().add(password);
-		
+		setUser(userType().get(1));
 		
 		
 		JButton btnLogin = new JButton("Login");
-		JButton btnSignUp = new JButton("SignUp");
+		
 		btnLogin.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				
+				setUser(userType().get(1));
 				boolean status = authenticate();
-				String user = userType();
+				String user = userType().get(0);
 				
 				if(status) {
 					String success = "Login successfull";					
@@ -139,7 +143,7 @@ public class LoginGUI {
 					
 					if(user.equals("Student")) {
 						login.dispose();
-						StartGUI sg = new StartGUI(username.getText());
+						StartGUI sg = new StartGUI();
 						sg.main(null);
 					}
 					if(user.equals("Teacher")) {
@@ -162,31 +166,24 @@ public class LoginGUI {
 			}
 		});
 		
-		btnSignUp.addActionListener(new ActionListener() {
-			@SuppressWarnings("static-access")
-			public void actionPerformed(ActionEvent arg0) {
-				login.dispose();
-				RegisterGUI window = new RegisterGUI();
-				window.main(null);
-
-			}
-		});
-		btnLogin.setBounds(105, 216, 89, 23);
-		btnSignUp.setBounds(215, 216, 89, 23);
+		
+		btnLogin.setBounds(155, 216, 89, 23);
+		
 		login.getContentPane().add(btnLogin);
-		login.getContentPane().add(btnSignUp);
+		
 	}
 	
 	public boolean authenticate() {
 		
 		
 		String uname = username.getText();
-		
+	
 		char[] pw = password.getPassword();
 		
 		boolean status = false;
 		try {
 			status = authentication.authenticate(uname,pw);
+			authentication.insertUser(uname);
 			String s = authentication.getUser(uname, pw);
 			
 			System.out.println(s);
@@ -198,8 +195,8 @@ public class LoginGUI {
 		
 		return status;
 	}
-    public String userType() {
-		
+    public List<String> userType() {
+		List<String> newList = new ArrayList();
 		String uname = username.getText();
 		
 		char[] pw = password.getPassword();
@@ -207,13 +204,14 @@ public class LoginGUI {
 		String userType = "";
 		try {
 			userType = authentication.getUser(uname,pw);
+			newList.add(userType);
 
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		newList.add(uname);
 		
-		
-		return userType;
+		return newList;
 	}
 }

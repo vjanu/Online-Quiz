@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 
 import com.perisic.beds.questionnaire.QuestionSet;
 import com.perisic.beds.rmiinterface.Authentication;
@@ -18,6 +19,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.TimerTask;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
@@ -27,7 +29,7 @@ public class QnAGUI {
 	
 	private ButtonGroup bg = new ButtonGroup();
 	//private ButtonGroup bg2 = new ButtonGroup();
-
+	private Authentication authentication;
 	private JTextArea lblQuestion;
 	RemoteQuestions myQuestions; 
 	private JLabel temp;
@@ -35,6 +37,7 @@ public class QnAGUI {
 	private JRadioButton rdbtnNewRadioButton_1;
 	private JRadioButton rdbtnNewRadioButton_2;
 	private JRadioButton rdbtnNewRadioButton_3;
+	JButton btnSubmit;
 	
 	private int i=0;
 	private int q=10;
@@ -59,7 +62,9 @@ public class QnAGUI {
 	private String fieldname;
 	public QnAGUI(String field) {
 		try {
+			
 			myQuestions =   (RemoteQuestions) Naming.lookup("rmi://localhost:1099/QuestionService1819");
+			authentication = (Authentication)Naming.lookup("rmi://localhost:1088/AuthService");
 		
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
@@ -71,16 +76,20 @@ public class QnAGUI {
 
 	private QuestionSet questionnaire = new QuestionSet(); 
 	private JLabel lblAnswer;
+
+
 	
 	
 	
 	public void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
+		frame.pack();
+		frame.setLocationRelativeTo(null); 
 		frame.setBounds(100, 100, 640, 480);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+        
 		if(fieldname == "Science")
 		{
 			addQuestion(i);
@@ -90,92 +99,119 @@ public class QnAGUI {
 		}
 		
 		//questionnaire.submitAnswer(0, options0[bg.hashCode()]);
+		btnSubmit = new JButton("Submit");
+		btnSubmit.addActionListener(new ActionListener() {
+			@SuppressWarnings("static-access")
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JOptionPane.showMessageDialog(null,"Successfully Submitted");
+				frame.setVisible(false);
+				
+			}
+		});
+		JLabel lblLogged = new JLabel("Logged as: "+loggedUser());
+		lblLogged.setBounds(510, 8, 95, 14);
+		frame.getContentPane().add(lblLogged);
 		
 		JButton btnNext = new JButton("Next");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				insertAnswers();
-				if (!temp.getText().isEmpty()) {	
-					
-					if( !fieldname.isEmpty()  )    
-					{
+				try {
+					insertAnswers();
+					if (!temp.getText().isEmpty()) {	
 						
-						if (fieldname=="Science")
+						if( !fieldname.isEmpty()  )    
 						{
-							if(i < 10 - 1) 
+							
+							if (fieldname=="Science")
 							{
-								i++;
-							
-							
-							
-							frame.getContentPane().remove(lblQuestion);
-							frame.getContentPane().remove(temp);
-							frame.getContentPane().remove(rdbtnNewRadioButton_0);
-							frame.getContentPane().remove(rdbtnNewRadioButton_1);
-							frame.getContentPane().remove(rdbtnNewRadioButton_2);
-							frame.getContentPane().remove(rdbtnNewRadioButton_3);
-		
-							frame.getContentPane().validate();
-							frame.getContentPane().repaint();
-							
-							addQuestion(i);		
-							}
-							else
+								if(i < 10 - 1) 
+								{
+									i++;
+								
+								
+								
+								frame.getContentPane().remove(lblQuestion);
+								frame.getContentPane().remove(temp);
+								frame.getContentPane().remove(rdbtnNewRadioButton_0);
+								frame.getContentPane().remove(rdbtnNewRadioButton_1);
+								frame.getContentPane().remove(rdbtnNewRadioButton_2);
+								frame.getContentPane().remove(rdbtnNewRadioButton_3);
+			
+								frame.getContentPane().validate();
+								frame.getContentPane().repaint();
+								
+								addQuestion(i);		
+								}
+								else
+								{
+									btnSubmit.setEnabled(true);
+									btnNext.setEnabled(false);
+//									
+								}
+							  }
+							if (fieldname=="Sport")
 							{
-								frame.setVisible(false);
-							}
-						  }
-						if (fieldname=="Sport")
-						{
-							if(q < 15 - 1) 
-							{
-								q++;
-							
-							
-							
-							frame.getContentPane().remove(lblQuestion);
-							frame.getContentPane().remove(temp);
-							frame.getContentPane().remove(rdbtnNewRadioButton_0);
-							frame.getContentPane().remove(rdbtnNewRadioButton_1);
-							frame.getContentPane().remove(rdbtnNewRadioButton_2);
-							frame.getContentPane().remove(rdbtnNewRadioButton_3);
-		
-							frame.getContentPane().validate();
-							frame.getContentPane().repaint();
-							
-							addQuestion(q);		
-							}
-							else
-							{
-								frame.setVisible(false);
-							}
-						  }
+								if(q < 20 - 1) 
+								{
+									q++;
+								
+								
+								
+								frame.getContentPane().remove(lblQuestion);
+								frame.getContentPane().remove(temp);
+								frame.getContentPane().remove(rdbtnNewRadioButton_0);
+								frame.getContentPane().remove(rdbtnNewRadioButton_1);
+								frame.getContentPane().remove(rdbtnNewRadioButton_2);
+								frame.getContentPane().remove(rdbtnNewRadioButton_3);
+			
+								frame.getContentPane().validate();
+								frame.getContentPane().repaint();
+								
+								addQuestion(q);		
+								}
+								else
+								{
+									btnSubmit.setEnabled(true);
+									btnNext.setEnabled(false);
+								}
+							  }
+						}
 					}
+					
+					else
+					{
+						JOptionPane.showMessageDialog(null,"Select a answer");
+					}
+					
+					
+					
 				}
-				
-				else
-				{
-					JOptionPane.showMessageDialog(null,"Select a answer");
+				 catch (Exception e2) {
+					 JOptionPane.showMessageDialog(null,"Select a answer");
 				}
-				
-				
-				
 			}
 		});
-		btnNext.setBounds(448, 368, 109, 44);
+		btnNext.setBounds(380, 368, 109, 30);
 		frame.getContentPane().add(btnNext);
+		btnSubmit.setEnabled(false);
+		btnSubmit.setBounds(500, 368, 109, 30);
+		frame.getContentPane().add(btnSubmit);
 		
 		lblAnswer = new JLabel("Answer:");
 		lblAnswer.setBounds(60, 379, 65, 14);
 		frame.getContentPane().add(lblAnswer);
 		
-		
-		
-		
-		
+	
 	}
-	
-	
+	private static String format(int i) {
+        String result = String.valueOf(i);
+        if (result.length() == 1) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
 	public boolean checkScienceButton()
 	{
 		return true;
@@ -254,21 +290,64 @@ public class QnAGUI {
 		
 	}
        public boolean insertAnswers() {
-		
-		
-		String type = bg.getSelection().getActionCommand();
-		
-		boolean status = false;
+		String question = lblQuestion.getText();
+		String correctAns = null;
 		try {
-			int id = (int)(Math.random() * 50 + 1);
-			status = myQuestions.insertAnswers(id, "xyz", lblQuestion.getText().split(".")[0], type);
-
-		} catch (RemoteException e) {
+			correctAns = myQuestions.getAnswer(question);
+		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+		int mark;
+		
+		String answerNew="";
+		String answer = bg.getSelection().getActionCommand();
+		if(rdbtnNewRadioButton_0.getText().equalsIgnoreCase(answer)) {
+			answerNew ="1";
+		}
+		if(rdbtnNewRadioButton_1.getText().equalsIgnoreCase(answer)) {
+			answerNew ="2";
+		}
+		if(rdbtnNewRadioButton_2.getText().equalsIgnoreCase(answer)) {
+			answerNew ="3";
+		}
+		if(rdbtnNewRadioButton_3.getText().equalsIgnoreCase(answer)) {
+			answerNew ="4";
+		}
+		
+		if(correctAns.equalsIgnoreCase(answerNew)) {
+			mark = 1;
+		}
+		else {
+			mark = 0;
+		}
+		boolean status = false;
+		int id = (int)(Math.random() * 500000000 + 1);
+			try {
+				status = myQuestions.insertAnswers(id, loggedUser(), question, answerNew, mark);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		status = true;
 		
 		
 		return status;
 	}
+       
+       public String loggedUser() {
+   		
+   		
+   		String uname = "";
+   		
+   		try {
+   			uname = authentication.loggedUser();
+   		} catch (RemoteException e) {
+   			// TODO Auto-generated catch block
+   			e.printStackTrace();
+   		}
+   		
+   		
+   		return uname;
+   	}
 }

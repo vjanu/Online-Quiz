@@ -1,6 +1,8 @@
 package com.perisic.beds.rmiinterface;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 /**
  * RMI interface to enable to retrieve questions from the server and to submit data
@@ -36,5 +38,13 @@ public interface RemoteQuestions extends Remote {
 	 */
 	public Vector<Question> getData() throws RemoteException; 
 	
-	public boolean insertAnswers(int id, String userName, String question, String answer) throws RemoteException;
+	public boolean insertQnA(int id, String category, String question, String answer1, String answer2, String answer3, String answer4, String Canswer) throws RemoteException;
+	
+	public Map<String, List<String>> getQnA() throws RemoteException;
+	
+	public boolean insertAnswers(int id, String username, String question, String answer, int mark) throws RemoteException;
+
+	public String getAnswer(String question) throws RemoteException;
+	
+	public Map<String, Integer> getFinalResults() throws RemoteException;
 }

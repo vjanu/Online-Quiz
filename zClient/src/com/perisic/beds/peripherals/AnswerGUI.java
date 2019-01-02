@@ -136,7 +136,7 @@ public class AnswerGUI {
 						studentList.add(user);
 						scoreList.add(score);
 						question.setFont(question.getFont().deriveFont(Font.BOLD, question.getFont().getSize()));
-						question.append(user+"  ---------------------->  "+score+"/10"+"\n");
+						question.append(user+"  --------------->  "+score+"/40"+"\n");
 						
 					
 					}

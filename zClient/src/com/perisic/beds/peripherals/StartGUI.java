@@ -77,7 +77,7 @@ public class StartGUI {
 		StartFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		StartFrame.getContentPane().setLayout(null);
 		
-		JButton btnStart = new JButton("Start");
+		JButton btnStart = new JButton("Go To Quiz");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				StartFrame.dispose();

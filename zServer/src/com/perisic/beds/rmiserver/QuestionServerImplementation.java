@@ -220,14 +220,6 @@ extends UnicastRemoteObject implements RemoteQuestions{
 	            ex.printStackTrace();
 	            
 	            
-	        }finally{
-	        	
-	            try{
-	                dbConnect.getConnection().close();
-	                
-	            } catch (SQLException ex) {
-	                ex.printStackTrace();
-	            }
 	        }
 			
 			return answer;

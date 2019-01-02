@@ -69,29 +69,26 @@ public class MenuGUI {
 		lblLogged.setBounds(325, 8, 95, 14);
 		frame.getContentPane().add(lblLogged);
 		
-		JButton btnScience = new JButton("Category 1");
+		JLabel lblText = new JLabel("Exam Contains 40 questions");
+		lblText.setBounds(136, 180, 195, 40);
+		frame.getContentPane().add(lblText);
+		JLabel lblText2 = new JLabel("Time Limit: 40 mins");
+		lblText2.setBounds(160, 210, 195, 40);
+		frame.getContentPane().add(lblText2);
+		
+		JButton btnScience = new JButton("Time Starts Now");
 		btnScience.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				QnAGUI qna = new QnAGUI("Science");
+				QnAGUI qna = new QnAGUI("questions");
 				qna.frame.setVisible(true); 
 				
 			}
 		});
-		btnScience.setBounds(163, 37, 95, 40);
+		btnScience.setBounds(143, 97, 135, 40);
 		frame.getContentPane().add(btnScience);
 		
-		JButton btnSports = new JButton("Category 2");
-		btnSports.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
-				QnAGUI qna = new QnAGUI("Sport");
-				qna.frame.setVisible(true); 
-				
-			}
-		});
-		btnSports.setBounds(163, 158, 95, 40);
-		frame.getContentPane().add(btnSports);
+
 		
 		
 	}

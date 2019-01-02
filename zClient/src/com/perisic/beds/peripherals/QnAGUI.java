@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
 import java.util.TimerTask;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
@@ -33,14 +34,17 @@ public class QnAGUI {
 	private JTextArea lblQuestion;
 	RemoteQuestions myQuestions; 
 	private JLabel temp;
+	private JLabel timerClock;
 	private JRadioButton rdbtnNewRadioButton_0;
 	private JRadioButton rdbtnNewRadioButton_1;
 	private JRadioButton rdbtnNewRadioButton_2;
 	private JRadioButton rdbtnNewRadioButton_3;
+	private JButton btnNext;
 	JButton btnSubmit;
-	
+	public static String username;
 	private int i=0;
 	private int q=10;
+	double timeLeft =600000;
 	
 	/**
 	 * Launch the application.
@@ -62,7 +66,7 @@ public class QnAGUI {
 	private String fieldname;
 	public QnAGUI(String field) {
 		try {
-			
+		
 			myQuestions =   (RemoteQuestions) Naming.lookup("rmi://localhost:1099/QuestionService1819");
 			authentication = (Authentication)Naming.lookup("rmi://localhost:1088/AuthService");
 		
@@ -82,6 +86,7 @@ public class QnAGUI {
 	
 	
 	public void initialize() {
+		
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.pack();
@@ -89,8 +94,13 @@ public class QnAGUI {
 		frame.setBounds(100, 100, 640, 480);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-        
-		if(fieldname == "Science")
+		username = loggedUser();
+		timerClock = new JLabel("40:00:000");
+		timerClock.setBounds(475, 8, 150, 14);
+		frame.getContentPane().add(timerClock);
+		
+		timer.start();
+		if(fieldname == "questions")
 		{
 			addQuestion(i);
 		}else if(fieldname=="Sport")		
@@ -109,11 +119,11 @@ public class QnAGUI {
 				
 			}
 		});
-		JLabel lblLogged = new JLabel("Logged as: "+loggedUser());
-		lblLogged.setBounds(510, 8, 95, 14);
-		frame.getContentPane().add(lblLogged);
+//		JLabel lblLogged = new JLabel("Logged as: "+loggedUser());
+//		lblLogged.setBounds(510, 8, 95, 14);
+//		frame.getContentPane().add(lblLogged);
 		
-		JButton btnNext = new JButton("Next");
+		btnNext = new JButton("Next");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -123,9 +133,9 @@ public class QnAGUI {
 						if( !fieldname.isEmpty()  )    
 						{
 							
-							if (fieldname=="Science")
+							if (fieldname=="questions")
 							{
-								if(i < 10 - 1) 
+								if(i < 40 - 1) 
 								{
 									i++;
 								
@@ -150,32 +160,7 @@ public class QnAGUI {
 //									
 								}
 							  }
-							if (fieldname=="Sport")
-							{
-								if(q < 20 - 1) 
-								{
-									q++;
-								
-								
-								
-								frame.getContentPane().remove(lblQuestion);
-								frame.getContentPane().remove(temp);
-								frame.getContentPane().remove(rdbtnNewRadioButton_0);
-								frame.getContentPane().remove(rdbtnNewRadioButton_1);
-								frame.getContentPane().remove(rdbtnNewRadioButton_2);
-								frame.getContentPane().remove(rdbtnNewRadioButton_3);
-			
-								frame.getContentPane().validate();
-								frame.getContentPane().repaint();
-								
-								addQuestion(q);		
-								}
-								else
-								{
-									btnSubmit.setEnabled(true);
-									btnNext.setEnabled(false);
-								}
-							  }
+//						
 						}
 					}
 					
@@ -218,11 +203,7 @@ public class QnAGUI {
 	}
 	
 	public void addQuestion(int x) {
-		
-		//lblquestion = new JTextArea();
-		//lblquestion.setEditable(false);
-		//lblquestion.setBounds(22, 64, 441, 38);
-		//frame.getContentPane().add(lblquestion);
+
 		
 		lblQuestion = new JTextArea(questionnaire.getQuestion(x));
 		lblQuestion.setEditable(false);
@@ -324,7 +305,7 @@ public class QnAGUI {
 		boolean status = false;
 		int id = (int)(Math.random() * 500000000 + 1);
 			try {
-				status = myQuestions.insertAnswers(id, loggedUser(), question, answerNew, mark);
+				status = myQuestions.insertAnswers(id, username, question, answerNew, mark);
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -334,6 +315,8 @@ public class QnAGUI {
 		
 		return status;
 	}
+       
+       
        
        public String loggedUser() {
    		
@@ -350,4 +333,21 @@ public class QnAGUI {
    		
    		return uname;
    	}
+       
+       ActionListener countDown=new ActionListener()
+       {
+           public void actionPerformed(ActionEvent e)
+           {
+               timeLeft -= 100;
+               SimpleDateFormat df=new SimpleDateFormat("mm:ss:SSS");
+               timerClock.setText("Time Left: "+df.format(timeLeft));
+               if(timeLeft<=0)
+               {
+                   timer.stop();
+                   btnNext.setEnabled(false);
+                   btnSubmit.setEnabled(true);
+               }
+           }
+       };
+       Timer timer=new Timer(100, countDown);
 }
